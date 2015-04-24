@@ -1,5 +1,17 @@
 {
   "name": "derhasi/symlinker",
+  "require": {
+    "symfony/yaml": "2.*",
+    "symfony/console": "2.*"
+  },
+  "type": "cli",
+  "license": "GPLv2+",
+  "authors": [
+    {
+      "name": "Johannes Haseitl",
+      "email": "johannes@undpaul.de"
+    }
+  ],
   "autoload": {
     "psr-4": {
       "derhasi\\symlinker\\": "src/"
