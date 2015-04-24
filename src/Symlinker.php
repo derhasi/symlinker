@@ -73,7 +73,7 @@ class Symlinker {
      */
     protected static function symlink($target, $source)
     {
-        $success = symlink($target, $source);
+        $success = symlink($source, $target);
 
         if (!$success) {
             throw new SymlinkFailedException($target, $source);
