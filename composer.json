@@ -2,7 +2,8 @@
   "name": "derhasi/symlinker",
   "require": {
     "symfony/yaml": "2.*",
-    "symfony/console": "2.*"
+    "symfony/console": "2.*",
+    "webmozart/path-util": "~1.1"
   },
   "type": "cli",
   "license": "GPLv2+",

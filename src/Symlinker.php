@@ -7,6 +7,8 @@ use derhasi\symlinker\Exception\SymlinkFailedException;
 use derhasi\symlinker\Exception\TargetAlreadyExistsException;
 use derhasi\symlinker\Exception\TargetAlreadyLinkedException;
 use derhasi\symlinker\Exception\TargetAlreadyLinkedToSourceException;
+use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\PathUtil\Path;
 
 class Symlinker {
 
@@ -34,7 +36,7 @@ class Symlinker {
         }
         // If target is a symlink and points to source, we do not have to
         // do anything.
-        elseif (readlink($target) == $source) {
+        elseif (static::linkedToSource($target, $source)) {
             throw new TargetAlreadyLinkedToSourceException($target, $source);
         }
         // If the target points to a different source ...
@@ -73,11 +75,40 @@ class Symlinker {
      */
     protected static function symlink($target, $source)
     {
+        if (!Path::isAbsolute($source)) {
+            $source = Path::makeRelative($source, dirname($target));
+        }
+
         $success = symlink($source, $target);
 
         if (!$success) {
             throw new SymlinkFailedException($target, $source);
         }
+    }
+
+    /**
+     * Checks if the target is already linked to source.
+     *
+     * @param $target
+     * @param $source
+     * @param $link
+     * @return bool
+     */
+    protected static function linkedToSource($target, $source)
+    {
+        $link = readlink($target);
+
+        if (Path::isAbsolute($link)) {
+            if (Path::isAbsolute($source)) {
+                return $source == $link;
+            }
+
+            return $link == Path::makeAbsolute($source, getcwd());
+        }
+        else {
+            return $link == Path::makeRelative($source, dirname($target));
+        }
+
     }
 
 
