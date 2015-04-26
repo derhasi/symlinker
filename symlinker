@@ -6,5 +6,6 @@ require __DIR__.'/_bootstrap.php';
 use Symfony\Component\Console\Application;
 
 $application = new Application();
+$application->add(new \derhasi\symlinker\Command\SymlinkSingle());
 $application->add(new \derhasi\symlinker\Command\Symlink());
 $application->run();
