@@ -6,6 +6,7 @@
 
 namespace derhasi\symlinker;
 
+use derhasi\symlinker\Exception\SourceNotFoundException;
 use derhasi\symlinker\Exception\SymlinkFailedException;
 use derhasi\symlinker\Exception\TargetAlreadyExistsException;
 use derhasi\symlinker\Exception\TargetAlreadyLinkedException;

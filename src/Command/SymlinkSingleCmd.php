@@ -58,6 +58,12 @@ class SymlinkSingleCmd extends Command {
             InputOption::VALUE_NONE,
             'Do not create a backup of the target, if it already exists'
           )
+          ->addOption(
+            'relativeSource',
+            null,
+            InputOption::VALUE_NONE,
+            'The source is given relative to the target'
+          )
         ;
     }
 
@@ -73,8 +79,9 @@ class SymlinkSingleCmd extends Command {
         $source = $input->getArgument('source');
         $backup = !$input->getOption('no-backup');
         $force = $input->getOption('force');
+        $relativeSource = $input->getOption('relativeSource');
 
-        $this->symlink($target, $source, $force, $backup);
+        $this->symlink($target, $source, $force, $backup, $relativeSource);
     }
 
     /**
@@ -84,11 +91,18 @@ class SymlinkSingleCmd extends Command {
      * @param $source
      * @param $force
      * @param $backup
+     * @param $relativeSource
      */
-    protected function symlink($target, $source, $force, $backup)
+    protected function symlink($target, $source, $force, $backup, $relativeSource)
     {
         $symlink = new Symlink($target, getcwd());
-        $symlink->setSourceFromWorkingDirectory($source);
+
+        if ($relativeSource) {
+            $symlink->setSource($source);
+        }
+        else {
+            $symlink->setSourceFromWorkingDirectory($source);
+        }
 
         try {
             $symlink->create($target, $source);
@@ -101,11 +115,11 @@ class SymlinkSingleCmd extends Command {
         }
         // If the target already exists, we may retry.
         catch (TargetAlreadyExistsException $e) {
-            $this->symlinkRetry($target, $source, $force, $backup, $e);
+            $this->symlinkRetry($target, $source, $force, $backup, $relativeSource, $e);
         }
         // If the target already is linked, we may retry.
         catch (TargetAlreadyLinkedException $e) {
-            $this->symlinkRetry($target, $source, $force, $backup, $e);
+            $this->symlinkRetry($target, $source, $force, $backup, $relativeSource, $e);
         }
     }
 
@@ -118,7 +132,7 @@ class SymlinkSingleCmd extends Command {
      * @param $backup
      * @param \RuntimeException $e
      */
-    protected function symlinkRetry($target, $source, $force, $backup, \RuntimeException $e)
+    protected function symlinkRetry($target, $source, $force, $backup, $relativeSource, \RuntimeException $e)
     {
         if ($force) {
             if ($backup) {
@@ -130,7 +144,7 @@ class SymlinkSingleCmd extends Command {
                 $this->output->writeln(sprintf('<comment>Removed %s.</comment>', $target));
             }
             // Retry.
-            $this->symlink($target, $source, FALSE, FALSE);
+            $this->symlink($target, $source, FALSE, FALSE, $relativeSource);
         }
         else {
             $this->output->writeln('<error>' . $e->getMessage() . '</error>');

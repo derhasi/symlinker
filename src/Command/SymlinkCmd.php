@@ -57,6 +57,12 @@ class SymlinkCmd extends Command {
             InputOption::VALUE_NONE,
             'Do not create a backup of the target, if it already exists'
           )
+          ->addOption(
+            'relativeSource',
+            null,
+            InputOption::VALUE_NONE,
+            'The source is given relative to the target'
+          )
         ;
     }
 
@@ -75,6 +81,7 @@ class SymlinkCmd extends Command {
 
         $backup = !$input->getOption('no-backup');
         $force = $input->getOption('force');
+        $relativeSource = $input->getOption('relativeSource');
 
         $yaml = Yaml::parse($file);
 
@@ -92,6 +99,7 @@ class SymlinkCmd extends Command {
               'source' => $source,
               '--force' => $force,
               '--no-backup' => !$backup,
+              '--relativeSource' => $relativeSource
             );
 
             $cmd_input = new ArrayInput($arguments);
