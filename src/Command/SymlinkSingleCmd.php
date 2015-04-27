@@ -9,14 +9,12 @@ namespace derhasi\symlinker\Command;
 use derhasi\symlinker\Exception\TargetAlreadyExistsException;
 use derhasi\symlinker\Exception\TargetAlreadyLinkedException;
 use derhasi\symlinker\Exception\TargetAlreadyLinkedToSourceException;
-use derhasi\symlinker\Symlinker;
+use derhasi\symlinker\Symlink;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Exception\FileNotFoundException;
-use Symfony\Component\Yaml\Yaml;
 
 class SymlinkSingleCmd extends Command {
 
@@ -89,9 +87,11 @@ class SymlinkSingleCmd extends Command {
      */
     protected function symlink($target, $source, $force, $backup)
     {
+        $symlink = new Symlink($target, getcwd());
+        $symlink->setSourceFromWorkingDirectory($source);
 
         try {
-            Symlinker::createSymlink($target, $source);
+            $symlink->create($target, $source);
             $this->output->writeln(sprintf('<info>Symlink created: %s to %s</info>', $source, $target));
         }
         // If the target already is linked correctly, we only print a different
