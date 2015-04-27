@@ -6,6 +6,10 @@
 
 namespace derhasi\symlinker;
 
+use derhasi\symlinker\Exception\SymlinkFailedException;
+use derhasi\symlinker\Exception\TargetAlreadyExistsException;
+use derhasi\symlinker\Exception\TargetAlreadyLinkedException;
+use derhasi\symlinker\Exception\TargetAlreadyLinkedToSourceException;
 use Webmozart\PathUtil\Path;
 
 /**
@@ -50,7 +54,7 @@ class Symlink {
         }
 
         if (!Path::isAbsolute($link)) {
-            $this->link = Path::makeRelative($link, $this->workingDirectory);
+            $this->link = Path::makeAbsolute($link, $this->workingDirectory);
         }
         else {
             $this->link = $link;

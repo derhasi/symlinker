@@ -18,7 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\FileNotFoundException;
 use Symfony\Component\Yaml\Yaml;
 
-class Symlink extends Command {
+class SymlinkCmd extends Command {
 
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
