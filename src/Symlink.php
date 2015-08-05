@@ -145,7 +145,7 @@ class Symlink {
     public function createRelative()
     {
         $this->validate();
-        $source = Path::makeRelative($this->source, $this->link);
+        $source = Path::makeRelative($this->source, dirname($this->link));
 
         $success = symlink($source, $this->link);
 
