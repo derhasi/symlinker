@@ -1,5 +1,6 @@
 {
   "name": "derhasi/symlinker",
+  "description": "A PHP library and CLI tool to create symlinks",
   "require": {
     "symfony/yaml": "2.*",
     "symfony/console": "2.*",
