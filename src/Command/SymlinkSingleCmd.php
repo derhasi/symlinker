@@ -139,10 +139,9 @@ class SymlinkSingleCmd extends Command {
                 $this->backup($target);
                 $this->output->writeln(sprintf('<comment>Created backup of %s.</comment>', $target));
             }
-            else {
-                $this->removeRecursive($target);
-                $this->output->writeln(sprintf('<comment>Removed %s.</comment>', $target));
-            }
+            $this->removeRecursive($target);
+            $this->output->writeln(sprintf('<comment>Removed %s.</comment>', $target));
+            
             // Retry.
             $this->symlink($target, $source, FALSE, FALSE, $relativeSource);
         }
