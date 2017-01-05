@@ -4,7 +4,7 @@
   "require": {
     "symfony/yaml": "2.*",
     "symfony/console": "2.*",
-    "webmozart/path-util": "~1.1"
+    "webmozart/path-util": "2.*"
   },
   "type": "cli",
   "license": "GPLv2+",
