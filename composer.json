@@ -7,7 +7,7 @@
     "webmozart/path-util": "2.*"
   },
   "type": "cli",
-  "license": "GPLv2+",
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Johannes Haseitl",
