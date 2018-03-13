@@ -2,7 +2,7 @@
   "name": "derhasi/symlinker",
   "description": "A PHP library and CLI tool to create symlinks",
   "require": {
-    "symfony/yaml": "2.* || ~3.2.0",
+    "symfony/yaml": "2.* || 3.*",
     "symfony/console": "2.* || 3.*",
     "webmozart/path-util": "2.*"
   },
